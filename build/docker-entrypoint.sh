@@ -30,11 +30,20 @@ sed -i "s/INSTANCEID/$INSTANCEID/;s/PROJECTID/$PROJECTID/" $HBASE_HOME/conf/hbas
 init() {
     # remove backwards incompatible TTL flag
     sed -i "s/, TTL => '\$TSDB_TTL'//g" $OPENTSDB/src/create_table.sh
+    echo "tsd.uid.use_mode=True" >> $OPENTSDB/src/opentsdb.conf
+    echo "google.bigtable.grpc.channel.count=128" >> $OPENTSDB/src/opentsdb.conf
     env COMPRESSION=NONE $OPENTSDB/src/create_table.sh
 }
 
 start() {
-    $OPENTSDB/build/tsdb tsd
+    echo "tsd.uid.use_mode=True" >> $OPENTSDB/src/opentsdb.conf
+    echo "tsd.network.worker_threads=24" >> $OPENTSDB/src/opentsdb.conf
+    echo "google.bigtable.grpc.channel.count=128" >> $OPENTSDB/src/opentsdb.conf
+    cp /opt/opentsdb/opentsdb.conf $OPENTSDB/src/opentsdb2.conf
+    echo "tsd.uid.use_mode=True" >> $OPENTSDB/src/opentsdb2.conf
+    echo "tsd.network.worker_threads=24" >> $OPENTSDB/src/opentsdb2.conf
+    echo "google.bigtable.grpc.channel.count=128" >> $OPENTSDB/src/opentsdb2.conf
+    $OPENTSDB/build/tsdb tsd --config $OPENTSDB/src/opentsdb2.conf
 }
 
 clean() {

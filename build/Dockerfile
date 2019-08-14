@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -y autoconf make unzip gnuplot curl git &&
     curl http://repo1.maven.org/maven2/io/netty/netty-tcnative-boringssl-static/1.1.33.Fork19/netty-tcnative-boringssl-static-1.1.33.Fork19.jar \
       -f -o hbase-1.2.12/lib/netty-tcnative-boringssl-static-1.1.33.Fork19.jar && \
     echo 'export HBASE_CLASSPATH="$HBASE_HOME/lib/bigtable/bigtable-hbase-1.2-0.9.5.1.jar:$HBASE_HOME/lib/netty-tcnative-boringssl-static-1.1.33.Fork19.jar"' >> /hbase-1.2.12/conf/hbase-env.sh && \
-    echo 'export HBASE_OPTS="${HBASE_OPTS} -Xms1024m -Xmx2048m"' >> /hbase-1.2.12/conf/hbase-env.sh
+    echo 'export HBASE_OPTS="${HBASE_OPTS} -Xms1024m -Xmx16384m"' >> /hbase-1.2.12/conf/hbase-env.sh
 
 RUN git clone https://github.com/OpenTSDB/opentsdb.git && \
     cd opentsdb && \
